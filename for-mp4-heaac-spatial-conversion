@@ -1,0 +1,58 @@
+#!/bin/bash
+####################################
+#Test script to decode files
+####################################
+
+#Specify the path where the input files need to be placed
+IPFILEPATH="/home/namana/Desktop/emtarang-anil/Result_Reference/mp4heaac"
+#Specify the output file extension
+IPFILEEXT=".mp4"
+
+
+#Specify the path where output wav files to decoder are located
+OPFILEPATH1="/home/namana/Desktop/emtarang-anil/Result_Reference/mp4sterio"
+#Specify the input file extension
+OPFILEEXT1=".wav"
+
+#Specify the path where the output files need to be placed
+OPFILEPATH2="/home/namana/Desktop/emtarang-anil/Result_Reference/mp4spatial"
+#Specify the output file extension
+OPFILEEXT2=".wav"
+
+
+#Specify the path of the executable
+EXECPATH="/home/namana/Desktop/emtarang-anil/29dec/Ref_Soft/bin/mp4mcDec/Linux_isomp4_sbr_ps_AFsp_gcc_O0d"
+#Specify the name of the executable (in this case adif2mp4)
+EXECFILE=$EXECPATH"/mp4audec_spatial"
+
+#Specify any command line options for the executable here
+OPTIONS="-w"
+
+	#For each file in the input path bs
+         
+ for i in $( ls $IPFILEPATH); do
+	    #Get the filename with its path in IPFILENAME
+	    IPFILENAME=$IPFILEPATH"/"$i
+            echo item: $IPFILENAME
+          
+	    
+
+               #Get the input aacdec wav filename same as input file name but with        output file extension in OPFILENAME
+	    result_string="${i/$OPFILEEXT1}"
+	    OPFILENAME1=$IPFILEPATH1"/"$result_string
+            echo item: $OPFILENAME1
+                     
+                
+                #Get the output spatial aacdec wav filename same as input file name but with        output file extension in OPFILENAME
+	    result_string="${i/$OPFILEEXT2}"
+	    OPFILENAME2=$OPFILEPATH2"/"$result_string
+            echo item: $OPFILENAME2
+  
+	    
+	#Run the executable 
+	echo "$EXECFILE $OPTIONS $IPFILENAME $OPFILENAME1 $OPFILENAME2"
+
+          $EXECFILE $OPTIONS $IPFILENAME $OPFILENAME1 $OPFILENAME2
+
+       done
+        

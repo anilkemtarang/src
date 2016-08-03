@@ -1,0 +1,67 @@
+#!/bin/bash
+####################################
+#Test script to decode files
+####################################
+
+#Specify the path where the output bs files need to be placed
+OPFILEPATH1="/home/emt/anil-work-1/mpegDmps_conformance/aacdec-bitstream-raw"
+#Specify the output file extension
+OPFILEEXT1=".bs"
+
+
+#Specify the path where input files to decoder are located
+IPFILEPATH="/home/emt/anil-work-1/mpegDmps_conformance/raw-ref"
+#Specify the input file extension
+IPFILEEXT=".aac"
+
+#Specify the path where the output files need to be placed
+OPFILEPATH2="/home/emt/anil-work-1/mpegDmps_conformance/aacdec-wav-raw"
+#Specify the output file extension
+OPFILEEXT2=".wav"
+
+
+#Specify the path where the output dummy files need to be placed
+OPFILEPATH3="/home/emt/anil-work-1/mpegDmps_conformance/dummy"
+#Specify the output file extension
+OPFILEEXT3=".wav"
+
+
+
+#Specify the path of the executable
+EXECPATH="/home/emt/anil-work-1/Reference_Build_Ubuntu/29dec/Ref_Soft/bin/mp4mcDec/Linux_isomp4_sbr_ps_AFsp_gcc_O0d"
+#Specify the name of the executable (in this case adif2mp4)
+EXECFILE=$EXECPATH"/aacdec_spatial"
+
+#Specify any command line options for the executable here
+OPTIONS="-3 -s 48000 -p LC -W"
+
+	#For each file in the input path 
+        for i in $( ls $IPFILEPATH); do
+	    #Get the filename with its path in IPFILENAME
+	    IPFILENAME=$IPFILEPATH"/"$i
+            echo item: $IPFILENAME
+	    
+	    #Get the output bs filename same as input file name but with         output file extension in OPFILENAME
+	    result_string="${i/$IPFILEEXT/$OPFILEEXT1}"
+	    OPFILENAME1=$OPFILEPATH1"/bs"$result_string
+            echo item: $OPFILENAME1
+
+            #Get the output aacdec wav filename same as input file name but with        output file extension in OPFILENAME
+	    result_string="${i/$IPFILEEXT/$OPFILEEXT2}"
+	    OPFILENAME2=$OPFILEPATH2"/aacdec"$result_string
+            echo item: $OPFILENAME2
+
+            #Get the output dummy filename same as input file name but with        output file extension in OPFILENAME
+	    result_string="${i/$IPFILEEXT/$OPFILEEXT3}"
+	    OPFILENAME3=$OPFILEPATH3"/dumy"$result_string
+            echo item: $OPFILENAME3
+
+  
+	    
+	#Run the executable 
+	echo "$EXECFILE $OPTIONS $OPFILENAME1 $IPFILENAME $OPFILENAME2 $OPFILENAME2"
+
+       $EXECFILE $OPTIONS $OPFILENAME1 $IPFILENAME $OPFILENAME2 $OPFILENAME2
+			
+        done
+        

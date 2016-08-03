@@ -1,0 +1,40 @@
+#!/bin/bash
+####################################
+#Test script to decode files
+####################################
+#Specify the path where input files to decoder are located
+IPFILEPATH="/home/emt/anil-work-1/mpegDmps_conformance/8136"
+#Specify the input file extension
+IPFILEEXT=".mp4"
+
+#Specify the path where the output files need to be placed
+OPFILEPATH="/home/emt/anil-work-1/mpegDmps_conformance/adif-ref"
+#Specify the output file extension
+OPFILEEXT=".aac"
+
+#Specify the path of the executable
+EXECPATH="/home/emt/anil-work-1/Reference_Build_Ubuntu/29dec/Ref_Soft/bin/mp4mcDec/Linux_isomp4_sbr_ps_AFsp_gcc_O0d"
+#Specify the name of the executable (in this case adif2mp4)
+EXECFILE=$EXECPATH"/adif2mp4"
+
+#Specify any command line options for the executable here
+OPTIONS="-o adts -f 8136 -mpeg2 "
+
+	#For each file in the input path 
+        for i in $( ls $IPFILEPATH); do
+	    #Get the filename with its path in IPFILENAME
+	    IPFILENAME=$IPFILEPATH"/"$i
+            echo item: $IPFILENAME
+	    
+	    #Get the output filename same as input file name but with output file extension in OPFILENAME
+	    result_string="${i/$IPFILEEXT/$OPFILEEXT}"
+	    OPFILENAME=$OPFILEPATH"/adif"$result_string
+            echo item: $OPFILENAME
+
+	    
+	#Run the executable 
+	echo "$EXECFILE $OPTIONS $IPFILENAME $OPFILENAME"
+	$EXECFILE $OPTIONS $IPFILENAME $OPFILENAME
+			
+        done
+        
